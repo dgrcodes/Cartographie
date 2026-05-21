@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartographie des passés</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header id="siteHeader">
+    <nav>
+        <ul>
+            <li><a href="#">CARTOGRAPHIE DES PASSÉS</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <section id="section-video">
+
+        <div class="container-video" id="containerVideo">
+            <video id="videoEl" playsinline muted></video>
+        </div>
+
+        <canvas id="grainCanvas"></canvas>
+
+        <div class="timeline-wrap" id="timeline">
+            <div class="tl-track-area">
+                <div class="tl-ruler">
+                    <div class="tl-line"></div>
+                    <div class="tl-ticks" id="ticksTop"></div>
+                    <div class="tl-head" id="tlHead"></div>
+                </div>
+                <div class="tl-year" id="tlYear">2026</div>
+            </div>
+        </div>
+
+        <div class="container-options" id="containerOptions">
+            <div class="container-options-a">
+                <button class="button-video choix-a" data-choice="a">Nom vidéo A</button>
+            </div>
+            <div class="container-options-b">
+                <button class="button-video choix-b" data-choice="b">Nom vidéo B</button>
+            </div>
+        </div>
+
+    </section>
+</main>
+
+<footer id="footer">
+    <span class="footer-text">Merci à la Société du 100ᵉ</span>
+    <img src="./assets/medias/100e_Logotype_Reduit_BLANC.png" alt="Société du 100e" class="footer-logo">
+    
+</footer>
+
+<button class="retour-btn" id="retourBtn">Retour</button>
+
+<script src="./assets/scripts/script.js"></script>
+</body>
+</html>
