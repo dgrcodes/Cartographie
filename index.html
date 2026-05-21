@@ -4,6 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cartographie des passés</title>
+    <style>
+        @media screen and (orientation: portrait) {
+            html {
+                transform: rotate(90deg);
+                transform-origin: left top;
+                width: 100vh;
+                height: 100vw;
+                overflow: hidden;
+                position: absolute;
+                top: 100%;
+                left: 0;
+            }
+        }
+    </style>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -51,7 +65,6 @@
 <footer id="footer">
     <span class="footer-text">Merci à la Société du 100ᵉ</span>
     <img src="./assets/medias/100e_Logotype_Reduit_BLANC.png" alt="Société du 100e" class="footer-logo">
-    
 </footer>
 
 <button class="retour-btn" id="retourBtn">Retour</button>
