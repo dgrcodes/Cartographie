@@ -17,6 +17,13 @@ const ctx              = grainCanvas.getContext('2d');
 
 const PALETTE = ['#327FEF','#33B793','#F0C177','#D3823E','#D69EE6'];
 
+window.addEventListener('orientationchange', () => {
+    setTimeout(() => {
+        document.documentElement.style.zoom = '1';
+        window.scrollTo(0, 0);
+    }, 100);
+});
+
 function randomColor(excludeColor) {
     const choices = PALETTE.filter(c => c !== excludeColor);
     return choices[Math.floor(Math.random() * choices.length)];
