@@ -20,7 +20,12 @@
     <section id="section-video">
 
         <div class="container-video" id="containerVideo">
-            <video id="videoEl" playsinline muted></video>
+            <video id="videoA" playsinline muted preload="auto" data-choice="a">
+                <source src="./assets/medias/test_video.mp4" type="video/mp4">
+            </video>
+            <video id="videoB" playsinline muted preload="auto" data-choice="b">
+                <source src="./assets/medias/test_video2.mp4" type="video/mp4">
+            </video>
         </div>
 
         <canvas id="grainCanvas"></canvas>

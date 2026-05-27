@@ -5,7 +5,8 @@ const YEAR_END         = 1926;
 
 const containerOptions = document.getElementById('containerOptions');
 const containerVideo   = document.getElementById('containerVideo');
-const videoEl          = document.getElementById('videoEl');
+const videoA           = document.getElementById('videoA');
+const videoB           = document.getElementById('videoB');
 const timeline         = document.getElementById('timeline');
 const tlHead           = document.getElementById('tlHead');
 const tlYear           = document.getElementById('tlYear');
@@ -15,14 +16,17 @@ const siteHeader       = document.getElementById('siteHeader');
 const grainCanvas      = document.getElementById('grainCanvas');
 const ctx              = grainCanvas.getContext('2d');
 
-const PALETTE = ['#327FEF','#33B793','#F0C177','#D3823E','#D69EE6'];
+let currentVideo = null;
 
+// ---- viewport zoom reset on orientation change (iOS Safari) ----
 window.addEventListener('orientationchange', () => {
-    setTimeout(() => {
-        document.documentElement.style.zoom = '1';
-        window.scrollTo(0, 0);
-    }, 100);
+    const viewport = document.querySelector('meta[name="viewport"]');
+    viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover, user-scalable=no');
+    setTimeout(() => window.scrollTo(0, 0), 100);
 });
+
+// ---- palette 100e ----
+const PALETTE = ['#327FEF','#33B793','#F0C177','#D3823E','#D69EE6'];
 
 function randomColor(excludeColor) {
     const choices = PALETTE.filter(c => c !== excludeColor);
@@ -34,6 +38,7 @@ function colorAtProgress(p) {
     return PALETTE[idx];
 }
 
+// ---- ticks ----
 function buildTicks() {
     const el = document.getElementById('ticksTop');
     for (let i = 0; i < TICK_COUNT; i++) {
@@ -45,6 +50,7 @@ function buildTicks() {
 }
 buildTicks();
 
+// ---- boutons ----
 const btns = document.querySelectorAll('.button-video');
 let lastColor = null;
 btns.forEach(btn => {
@@ -62,18 +68,18 @@ btns.forEach(btn => {
     btn.addEventListener('click', () => startTransition(btn.dataset.choice));
 });
 
-let grainIntensity = 0.6;
+// ---- grain canvas ----
+let grainIntensity = 0.4;
 
 function resizeCanvas() {
-    const isPortrait = window.matchMedia('(orientation: portrait)').matches;
-    grainCanvas.width  = isPortrait ? window.innerHeight : window.innerWidth;
-    grainCanvas.height = isPortrait ? window.innerWidth  : window.innerHeight;
+    grainCanvas.width  = window.innerWidth;
+    grainCanvas.height = window.innerHeight;
 }
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
-window.addEventListener('orientationchange', resizeCanvas);
+window.addEventListener('orientationchange', () => setTimeout(resizeCanvas, 200));
 
-function drawGrain(t) {
+function drawGrain() {
     const w = grainCanvas.width;
     const h = grainCanvas.height;
     ctx.clearRect(0, 0, w, h);
@@ -95,11 +101,12 @@ function drawGrain(t) {
 let grainFrame = 0;
 function animateGrain() {
     grainFrame++;
-    if (grainFrame % 8 === 0) drawGrain(performance.now());
+    if (grainFrame % 8 === 0) drawGrain();
     requestAnimationFrame(animateGrain);
 }
 animateGrain();
 
+// ---- year counter ----
 function easeInOut(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
 
 function updateYear(progress) {
@@ -117,15 +124,15 @@ function updateYear(progress) {
         : '0.8';
 }
 
+// ---- transition ----
 function startTransition(choice) {
     containerOptions.classList.add('hidden');
     footer.classList.add('hidden');
     siteHeader.classList.add('hidden');
 
-    videoEl.src = choice === 'a'
-        ? './assets/medias/test_video.mp4'
-        : './assets/medias/test_video2.mp4';
-    videoEl.load();
+    currentVideo = choice === 'a' ? videoA : videoB;
+    currentVideo.currentTime = 0;
+    currentVideo.classList.add('active');
 
     setTimeout(() => {
         timeline.classList.add('visible');
@@ -145,7 +152,7 @@ function startTransition(choice) {
                 videoStarted = true;
                 containerVideo.classList.add('reveal');
                 retourBtn.classList.add('visible');
-                videoEl.play().catch(e => console.warn('play blocked:', e));
+                currentVideo.play().catch(e => console.warn('play blocked:', e));
             }
 
             if (progress >= 1) {
@@ -166,8 +173,12 @@ function resetScene() {
     retourBtn.classList.remove('visible');
 
     setTimeout(() => {
-        videoEl.pause();
-        videoEl.src = '';
+        if (currentVideo) {
+            currentVideo.pause();
+            currentVideo.currentTime = 0;
+            currentVideo.classList.remove('active');
+            currentVideo = null;
+        }
         containerVideo.classList.remove('reveal');
         containerVideo.style.transition = '';
         containerVideo.style.opacity    = '';
@@ -215,4 +226,5 @@ function resetScene() {
 }
 
 retourBtn.addEventListener('click', resetScene);
-videoEl.addEventListener('ended', resetScene);
+videoA.addEventListener('ended', resetScene);
+videoB.addEventListener('ended', resetScene);
