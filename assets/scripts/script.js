@@ -208,3 +208,4 @@ function resetScene() {
 }
 
 retourBtn.addEventListener('click', resetScene);
+videoEl.addEventListener('ended', resetScene);
