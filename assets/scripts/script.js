@@ -15,7 +15,6 @@ const siteHeader       = document.getElementById('siteHeader');
 const grainCanvas      = document.getElementById('grainCanvas');
 const ctx              = grainCanvas.getContext('2d');
 
-// ---- palette 100e (sans beige, jamais la meme couleur deux fois de suite) ----
 const PALETTE = ['#327FEF','#33B793','#F0C177','#D3823E','#D69EE6'];
 
 function randomColor(excludeColor) {
@@ -28,7 +27,6 @@ function colorAtProgress(p) {
     return PALETTE[idx];
 }
 
-// ---- ticks ----
 function buildTicks() {
     const el = document.getElementById('ticksTop');
     for (let i = 0; i < TICK_COUNT; i++) {
@@ -40,7 +38,6 @@ function buildTicks() {
 }
 buildTicks();
 
-// ---- boutons — couleurs jamais pareilles ----
 const btns = document.querySelectorAll('.button-video');
 let lastColor = null;
 btns.forEach(btn => {
@@ -58,15 +55,16 @@ btns.forEach(btn => {
     btn.addEventListener('click', () => startTransition(btn.dataset.choice));
 });
 
-// ---- grain canvas — VHS/archive ----
-let grainIntensity = 0.4;
+let grainIntensity = 0.6;
 
 function resizeCanvas() {
-    grainCanvas.width  = window.innerWidth;
-    grainCanvas.height = window.innerHeight;
+    const isPortrait = window.matchMedia('(orientation: portrait)').matches;
+    grainCanvas.width  = isPortrait ? window.innerHeight : window.innerWidth;
+    grainCanvas.height = isPortrait ? window.innerWidth  : window.innerHeight;
 }
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
+window.addEventListener('orientationchange', resizeCanvas);
 
 function drawGrain(t) {
     const w = grainCanvas.width;
@@ -95,7 +93,6 @@ function animateGrain() {
 }
 animateGrain();
 
-// ---- year counter ----
 function easeInOut(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
 
 function updateYear(progress) {
@@ -113,7 +110,6 @@ function updateYear(progress) {
         : '0.8';
 }
 
-// ---- transition ----
 function startTransition(choice) {
     containerOptions.classList.add('hidden');
     footer.classList.add('hidden');
@@ -128,7 +124,7 @@ function startTransition(choice) {
         timeline.classList.add('visible');
         tlYear.textContent = YEAR_START;
         tlHead.style.left  = '100%';
-        grainIntensity = 0.4; // unchanged
+        grainIntensity = 0.4;
         const inc        = 1 / (3000 / 30);
         let progress     = 0;
         let videoStarted = false;
@@ -157,7 +153,6 @@ function startTransition(choice) {
 }
 
 function resetScene() {
-    // fade out vidéo lentement
     containerVideo.style.transition = 'opacity 1.2s ease, filter 1.2s ease';
     containerVideo.style.opacity    = '0';
     containerVideo.style.filter     = 'blur(30px)';
@@ -174,9 +169,8 @@ function resetScene() {
         tlHead.style.background = 'var(--beige-pale)';
         tlYear.textContent = YEAR_START;
         tlYear.style.color = 'rgba(208,205,202,0.65)';
-        grainIntensity = 0.4; // unchanged
+        grainIntensity = 0.4;
 
-        // nouvelles couleurs aux boutons
         let last = null;
         document.querySelectorAll('.button-video').forEach(btn => {
             const color = randomColor(last);
@@ -186,7 +180,6 @@ function resetScene() {
             if (ul) ul.style.background = color;
         });
 
-        // fade in menu
         containerOptions.style.opacity = '0';
         containerOptions.classList.remove('hidden');
         footer.style.opacity = '0';

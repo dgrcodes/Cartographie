@@ -1,9 +1,0 @@
-{
-    "name": "Cartographie des passés",
-    "short_name": "Cartographie",
-    "display": "standalone",
-    "orientation": "landscape",
-    "start_url": "./index.html",
-    "background_color": "#1D202B",
-    "theme_color": "#1D202B"
-}

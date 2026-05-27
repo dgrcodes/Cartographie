@@ -23,6 +23,22 @@ body {
     color: var(--beige-pale);
 }
 
+@media (orientation: portrait) {
+    html {
+        overflow: hidden;
+    }
+    body {
+        transform: rotate(-90deg);
+        transform-origin: left top;
+        width: 100dvh;
+        height: 100dvw;
+        position: absolute;
+        top: 100dvh;
+        left: 0;
+        overflow: hidden;
+    }
+}
+
 header {
     position: absolute;
     top: 0; left: 0;
@@ -95,7 +111,6 @@ nav ul li a {
     mix-blend-mode: screen;
 }
 
-/* options */
 .container-options {
     position: absolute;
     inset: 0;
@@ -114,11 +129,14 @@ nav ul li a {
     display: flex;
     justify-content: flex-end;
     padding-right: 8%;
+    padding-bottom: 0.75rem;
 }
+
 .container-options-b {
     display: flex;
     justify-content: flex-start;
     padding-left: 8%;
+    padding-top: 0.5rem;
 }
 
 .button-video {
@@ -159,7 +177,6 @@ nav ul li a {
 
 .button-video:hover { font-weight: 700; }
 
-/* timeline */
 .timeline-wrap {
     position: absolute;
     inset: 0;
@@ -180,7 +197,6 @@ nav ul li a {
     gap: 10px;
 }
 
-/* conteneur relatif — la ligne et les ticks se superposent */
 .tl-ruler {
     position: relative;
     width: 100%;
@@ -189,7 +205,6 @@ nav ul li a {
     align-items: center;
 }
 
-/* ligne horizontale au centre */
 .tl-line {
     position: absolute;
     left: 0; right: 0;
@@ -199,7 +214,6 @@ nav ul li a {
     background: rgba(208, 205, 202, 0.55);
 }
 
-/* ticks superposés sur la ligne */
 .tl-ticks {
     position: absolute;
     left: 0; right: 0;
@@ -217,7 +231,6 @@ nav ul li a {
 .tl-tick.tall  { height: 100%; }
 .tl-tick.short { height: 45%; }
 
-/* tête de lecture */
 .tl-head {
     position: absolute;
     top: 0; bottom: 0;
@@ -238,7 +251,6 @@ nav ul li a {
     text-align: left;
 }
 
-/* retour */
 .retour-btn {
     position: fixed;
     bottom: 0.5rem;
@@ -273,7 +285,6 @@ nav ul li a {
 .retour-btn:hover::after,
 .retour-btn:active::after { width: 100%; }
 
-/* footer */
 footer {
     position: absolute;
     bottom: 0; left: 0;
